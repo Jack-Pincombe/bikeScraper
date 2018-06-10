@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as bs
 from urllib.error import HTTPError
 import re
 
-url = "https://www.superbikefactory.co.uk/used-motorcycles-macclesfield-cheshire"
+url = "https://www.superbikefactory.co.uk/search_page.php?term=ducati-macclesfield-cheshire&ccto=9999&sort=h"
 
 def getTitle(url):
     try:
@@ -23,8 +23,12 @@ def getAllPrices(bsObj):
     for tag in bsObj.findAll('span', {'class': 'price-is'}):
         list.append(getBikePrice(tag))
 
+    print(len(list))
+
 def getBikePrice(tag):
-    p = re.findall('(\S[1-9].*\d)', str(tag))[0]
-    print("The price of the bike is " + p)
+    price = re.findall('(\S[1-9].*\d)', str(tag))[0]
+    print("The price of the bike is " + price)
 
 getTitle(url)
+
+
