@@ -19,7 +19,6 @@ def getTitle(url):
 
 def getAllPrices(bsObj):
     list = []
-
     for tag in bsObj.findAll('span', {'class': 'price-is'}):
         list.append(getBikePrice(tag))
 
