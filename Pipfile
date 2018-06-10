@@ -5,6 +5,8 @@ url = "https://pypi.org/simple"
 
 [packages]
 requests = "*"
+urlopen = "*"
+"bs4" = "*"
 
 [requires]
 python_version = "3.5"
