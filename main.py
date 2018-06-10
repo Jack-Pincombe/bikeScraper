@@ -29,5 +29,3 @@ def getBikePrice(tag):
     print("The price of the bike is " + price)
 
 getTitle(url)
-
-
