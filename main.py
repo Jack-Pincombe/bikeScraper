@@ -3,12 +3,14 @@ from bs4 import BeautifulSoup as bs
 from urllib.error import HTTPError
 from selenium import webdriver
 import re
-
+import csv
 url = "https://www.superbikefactory.co.uk/search_page.php?term=ducati-macclesfield-cheshire&ccto=9999&sort=h"
 firefox_path = "/home/jack/Desktop/"
 
 driver = webdriver.Firefox(firefox_path)
 driver.get('https://www.superbikefactory.co.uk/used-motorcycles-macclesfield-cheshire')
+list = []
+
 
 def siteNum(pageNo):
     buttonPath = """/html/body/div[1]/div[2]/div[2]/div/div/div/div[4]/div/div/div/div/div[3]/ol/li["""+ str(pageNo) + """]/a"""
@@ -26,15 +28,18 @@ def getTitle(url):
         bsObj = bs(html.read(), "html.parser")
         getAllPrices(bsObj)
 
+
+
 def getAllPrices(bsObj):
-    list = []
     bikes = bsObj.findAll('h3')
     prices = bsObj.findAll('span', {'class': 'price-is'})
     for bike in range(10):
-
         bikeDetail = str(bikes[bike].get_text()).strip()
-        print("The cost of " + str(getBikeDetails(bikeDetail)) + ' is ' + str((getBikePrice(prices[bike].get_text()))).strip())
+        price =str((getBikePrice(prices[bike].get_text()))).strip()
 
+        bike = [bikeDetail, price]
+
+        list.append(bike)
 
 def getBikePrice(tag):
     price = re.findall('(\S[1-9].*\d)', str(tag))[0]
@@ -63,7 +68,13 @@ def siteMove():
             siteNum(pageNo)).click()
         getTitle(driver.current_url)
 
+def addToCsv(list):
+    with open('bikes.csv', 'w+') as my_csv:
+        csvWriter = csv.writer(my_csv, delimiter=',')
+        csvWriter.writerow(list)
+
 def __main__():
     siteMove()
+    addToCsv(list)
 
 __main__()
