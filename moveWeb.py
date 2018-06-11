@@ -19,12 +19,12 @@ def getTitle(url):
 
 def getAllPrices(bsObj):
     list = []
-    for container in bsObj.findAll('div', {'class': 'container'}):
-        price = getBikePrice(container.findAll('span', {'class': 'price-is'}))
-        text = getBikeMake(container.find('h3'))
+    bikes = bsObj.findAll('h3')
+    prices = bsObj.findAll('span', {'class': 'price-is'})
+    for bike in range(10):
 
+        print("The cost of " + str(bikes[bike].get_text()).lstrip(' ') + ' is ' + str((getBikePrice(prices[bike].get_text()))).lstrip())
 
-        print("The cost of " + str(getBikeMake(text)) + " is " + str(getBikePrice(price)))
 
 def getBikeMake(tag):
     make = re.compile('\"View Vehicle Details\"(.*\S)/')
@@ -33,9 +33,7 @@ def getBikeMake(tag):
         return make
 
 def getBikePrice(tag):
-    price = re.compile('(\S[1-9].*\d)')
-
-    if price.match(str(tag)):
-        return price
+    price = re.findall('(\S[1-9].*\d)', str(tag))[0]
+    return price
 
 getTitle('https://www.superbikefactory.co.uk/used-motorcycles-macclesfield-cheshire')

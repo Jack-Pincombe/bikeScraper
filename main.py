@@ -28,19 +28,25 @@ def getTitle(url):
 
 def getAllPrices(bsObj):
     list = []
-    for tag in bsObj.findAll('span', {'class': 'price-is'}):
-        list.append(getBikePrice(tag))
+    bikes = bsObj.findAll('h3')
+    prices = bsObj.findAll('span', {'class': 'price-is'})
+    for bike in range(10):
 
-    print(len(list))
-
-def getBikeMake(bsObj):
-    pass
-
+        bikeDetail = str(bikes[bike].get_text()).strip()
+        print("The cost of " + str(getBikeDetails(bikeDetail)) + ' is ' + str((getBikePrice(prices[bike].get_text()))).strip())
 
 
 def getBikePrice(tag):
     price = re.findall('(\S[1-9].*\d)', str(tag))[0]
-    print("The price of the bike is " + price)
+    return price
+
+def getBikeDetails(tag):
+    patern = re.compile('.+?(?=0%)')
+
+    if patern.match(tag):
+        return re.findall('.+?(?=0%)', tag)
+    else:
+        return tag
 
 def siteMove():
     pageNo = 5
@@ -57,14 +63,7 @@ def siteMove():
             siteNum(pageNo)).click()
         getTitle(driver.current_url)
 
-def setUp():
-    firefox_path = "/home/jack/Desktop/"
-
-    driver = webdriver.Firefox(firefox_path)
-    driver.get('https://www.superbikefactory.co.uk/used-motorcycles-macclesfield-cheshire')
-
 def __main__():
-    #setUp()
     siteMove()
 
 __main__()
