@@ -5,7 +5,7 @@ from selenium import webdriver
 import re
 import csv
 url = "https://www.superbikefactory.co.uk/search_page.php?term=ducati-macclesfield-cheshire&ccto=9999&sort=h"
-firefox_path = "/home/jack/Desktop/"
+firefox_path = "/Users/jackpincombe/Desktop/"
 
 driver = webdriver.Firefox(firefox_path)
 driver.get('https://www.superbikefactory.co.uk/used-motorcycles-macclesfield-cheshire')
@@ -71,10 +71,17 @@ def siteMove():
 def addToCsv(list):
     with open('bikes.csv', 'w+') as my_csv:
         csvWriter = csv.writer(my_csv, delimiter=',')
-        csvWriter.writerow(list)
+        for i in list:
+            csvWriter.writerow(i)
+
+def readCSV():
+    with open("bikes.csv") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            print("The cost of a" + row[0] + " is " + row[1])
 
 def __main__():
     siteMove()
     addToCsv(list)
 
-__main__()
+readCSV()
