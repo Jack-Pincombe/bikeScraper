@@ -28,8 +28,6 @@ def getTitle(url):
         bsObj = bs(html.read(), "html.parser")
         getAllPrices(bsObj)
 
-
-
 def getAllPrices(bsObj):
     bikes = bsObj.findAll('h3')
     prices = bsObj.findAll('span', {'class': 'price-is'})
