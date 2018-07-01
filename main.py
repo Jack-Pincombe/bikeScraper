@@ -4,13 +4,19 @@ from urllib.error import HTTPError
 from selenium import webdriver
 import re
 import csv
-url = "https://www.superbikefactory.co.uk/search_page.php?term=ducati-macclesfield-cheshire&ccto=9999&sort=h"
-firefox_path = "/Users/jackpincombe/Desktop/"
+import platform
 
-driver = webdriver.Firefox(firefox_path)
-driver.get('https://www.superbikefactory.co.uk/used-motorcycles-macclesfield-cheshire')
 list = []
 
+def setUpSelenium():
+    host = platform.system()
+    if host == 'Linux':
+        firefox_path = "/home/jack/Desktop/"
+    else:
+        firefox_path = "/Users/jackpincombe/Desktop"
+
+    driver = webdriver.Firefox(firefox_path)
+    driver.get('https://www.superbikefactory.co.uk/used-motorcycles-macclesfield-cheshire')
 
 def siteNum(pageNo):
     buttonPath = """/html/body/div[1]/div[2]/div[2]/div/div/div/div[4]/div/div/div/div/div[3]/ol/li["""+ str(pageNo) + """]/a"""
@@ -60,7 +66,6 @@ def siteMove():
             siteNum(pageNo)).click()
         pageNo -= 1
 
-
     for i in range(10):
         driver.find_element_by_xpath(
             siteNum(pageNo)).click()
@@ -77,8 +82,10 @@ def readCSV():
         reader = csv.reader(f)
         for row in reader:
             print("The cost of a" + row[0] + " is " + row[1])
+    list = []
 
 def __main__():
+    setUpSelenium()
     siteMove()
     addToCsv(list)
 
